@@ -1,0 +1,10 @@
+{%extends 'base.html'%}
+{%block con%}
+<form method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    <input type="file" name="im">
+    <button>업로드</button>
+</form>
+<img src="/media/media/{{im}}">
+
+{%endblock%}

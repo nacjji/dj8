@@ -1,0 +1,104 @@
+{%extends 'base.html'%}
+{%block con%}
+
+
+
+<div class="row mt-5">
+    <table>
+        <tr>
+            <th rowspan="4">
+                <div class="col-sm-3 m-3" >
+                    <img src="{{b.writer.getpic}}" width=90px>
+                </div>
+            </th>
+            <th>
+                <b>제목 : {{b.subject}}</b>
+            </th>
+            <tr>
+                <th>
+                    <div class="text-left mt-3">
+                        작성자 : <b>{{b.writer}}
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <div class="text-left mt-3">
+                        작성일 : <b> {{ b.pubdate | date:'Y년 n월 j일 / H:i' }}</b>
+                    </div>
+                </th>
+            </tr>
+    </table>
+    <div class="col-sm-9">
+        <textarea class="form-control" style="height:250px" disabled>{{b.content}}</textarea>
+    </div>
+</div>
+
+<div class="text-end mt-4">
+    <a href="{% url 'board:index'%}" class="btn btn-dark">글목록</a>
+    {% if b.writer == user %}
+        <a href="{% url 'board:update' b.id%}" class="btn btn-dark">글수정</a>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#remove">
+            글삭제
+        </button>
+    {%endif%}
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="remove" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><b>게시글 삭제 알림창</b></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                정말 삭제하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <a href="{%url 'board:delete' b.id%}" class="btn btn-danger">삭제</a>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+    <form method="post" action="{% url 'board:crepl' b.id%}">
+        {%csrf_token%}
+        <div class="row">
+            <div class="col-sm-10">
+                <input name="ncom" type="text" class="form-control" placeholder="댓글을 남겨주세요">
+            </div>
+            <div class="col-sm-2">
+                <div class="text-end">
+                    <button class="btn btn-dark">댓글작성</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{%for i in rset%}
+    <table class="mb-3">
+        <tr>
+            <th width="45px"> <img src="{{i.replyer.getpic}}" width="30px" class="rounded-circle"></th>
+            <th width="80px"> {{i.replyer}}</th>
+            <th width="400px" style="text-align: left;"> {{i.comment}} 
+                {%if user == i.replyer %}
+                <a style="color: gray; text-decoration: none;" href="{% url 'board:cdelete' b.id i.id %}">x</a>
+                {%endif%}
+            </th>
+        </tr>
+        <hr>
+    </table>
+{%empty%}
+    <div class="mt-5"> 댓글이 없습니다.</div>
+{%endfor%}
+
+
+
+
+
+{%endblock%}

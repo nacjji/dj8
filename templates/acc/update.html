@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block con %}
+
+    <h1><b>정보수정</b></h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3 mt-5">
+            <label class="form-label">USERNAME</label>
+            <input type="text" value="{{user}}" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">EMAIL</label>
+            <input type="text" value="{{ user.email }}" name="umail" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">COMMENT</label>
+            <textarea class="form-control" name="ucomm">{{ user.comment }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">USERPIC</label>
+            <input type="file" name="upic" class="form-control">
+        </div>
+        <div class="text-end mt-4">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                패스워드 변경
+            </button>
+            <a href="{% url 'acc:profile' %}" class="btn btn-dark">수정취소</a>
+            <button class="btn btn-dark">프로필수정</button>
+        </div>
+    </form>
+
+    <!-- Modal in update.html -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>패스워드 변경창</b></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form method="post" action="{% url 'acc:chpass' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">    
+                        <div class="container mt-5 mb-5 text-center">
+                            <input type="password" name="cpass" class="form-control" placeholder="INPUT CURRENT PASSWORD">
+                            <input type="password" name="npass" class="form-control mt-3" placeholder="INPUT NEW PASSWORD">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button class="btn btn-primary">변경</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{%extends 'base.html'%}
+{%block con%}
+
+<!-- profile.html -->
+<h1><b>프로필</b></h1>
+<div class="row" >
+    <div class="col-sm-5" style="margin: auto;">
+        <div class="text-center mt-2">
+            <img src="{{user.getpic}}" width="100%">
+        </div>
+    </div>
+    <div class="col-sm-7">
+        <div class="mb-3 mt-3">
+            <label class="form-label">USERNAME</label>
+            <input type="text" disabled class="form-control" value="{{user}}" style="font-weight: bold;">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">POINT</label>
+            <input type="text" style="font-weight: bold;" value="{{user.point}}" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">EMAIL</label>
+            <input type="text" style="font-weight: bold;" value="{{user.email}}" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">COMMENT</label>
+            <textarea class="form-control" disabled style="font-weight: bold; height: 100px;">{{user.comment}}</textarea>
+        </div>
+    </div>
+</div>
+
+<div class="text-end mt-4">
+    <a href="{% url 'acc:update' %}"><button class="btn btn-dark">프로필수정</button></a>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        계정삭제
+    </button>
+</div>
+
+<!-- Modal in profile.html -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><b>계정삭제 알림창</b></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form method="post" action="{% url 'acc:delete' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="container">
+                        <input class="form-control" type="password" name="cpass" placeholder="INPUT CURRENT PASSWORD">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button class="btn btn-danger">삭제</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{%endblock%}

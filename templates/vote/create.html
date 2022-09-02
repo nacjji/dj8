@@ -1,0 +1,24 @@
+{%extends 'base.html'%}
+{%block con%}
+
+<h1><b> 토픽 생성 </b></h1>
+<form method="post">
+    {%csrf_token%}
+    <input type="text" placeholder="주제 입력" name="sub"><br><br>
+    <textarea name="con" id="" cols="30" rows="3"placeholder='내용 입력'></textarea><br><br>
+    <hr>
+    <button type="button" onclick="makecho()" class="btn btn-dark">보기추가</button><br><br>
+    <button class="btn btn-dark">토픽생성</button>
+    <div id="here"></div>
+</form>
+<script> 
+    function makecho(){
+        d = document.getElementById('here');
+        p = document.createElement('p');
+        p.innerHTML = " 보기이름 <input name='cho' type='text'><br><input name ='pic' type='file' placeholder='사진첨부'>";
+        d.appendChild(p);
+    }
+</script>
+{%endblock%}
+
+

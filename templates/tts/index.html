@@ -1,0 +1,30 @@
+{%extends 'base.html'%}
+{%block con%}
+<h1><b>TTS</b></h1>
+        <form method="post">
+            {%csrf_token%}
+            <div class='mt-5'>
+                <textarea name="st" class="form-control" placeholder="tts" style="height: 250px; width: 100%;">{{st}}</textarea>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 mt-5" >
+                    <input type="text" class="form-control" name="fname" value="{{fn}}" placeholder="파일명을 입력하세요">
+                </div>    
+                <div class="col-sm-3 mt-5">
+                    <select class="form-select" name="lang">
+                        <option value="ko" {%if la == 'ko'%}selected {% endif %} >한국어</option>
+                        <option value="en" {%if la == 'en'%}selected {% endif %}>영어</option>
+                    </select>
+                </div>    
+                <div class="col-sm-3 mt-5">
+                    <button class="btn btn-dark" style="width: 100%;"> 변환 </button>
+                </div>    
+            
+                <div class="col-sm-3 mt-5">
+                    <a class="btn btn-dark" type="button" style="width: 100%;" {% if fn%} href="/media/tts/{{fn}}.mp3" download {%endif%}> 다운받기 </a>
+                </div>
+            </div>
+        </form>    
+        
+
+{%endblock%}

@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{% block con %}
+    <a href="{%url 'vote:create'%}"><button class="btn btn-dark">토픽생성</button></a><br><br>
+
+    {%for i in tset%}
+        {%if user in i.voter.all %}
+        <div>
+            <img src="{{i.maker.getpic}}" width="10%"><br><br>
+            {{i.maker}}님의 글
+        </div>
+        <hr>
+            <a href="{%url 'vote:detail' i.id%}"><button class="btn btn-dark">{{i.subject}} 결과보기</button></a> ✔<br><br>
+            <hr>
+        {%else%}
+            <img src="{{i.maker.getpic}}" width="10%"><br><br>
+            {{i.maker}}님의 글
+            <a href="{%url 'vote:detail' i.id%}"><button class="btn btn-dark">{{i.subject}}</button></a><br><br>
+            <hr>
+        {%endif%}
+    {%endfor%}
+
+
+{% endblock%}

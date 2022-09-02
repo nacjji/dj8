@@ -1,0 +1,50 @@
+{% extends 'base.html'%}
+
+{%block con%}
+{%load mathfilters%}
+
+
+<h2>{{t.subject}}</h2><br>
+
+
+<h4>게시자 . <b>{{t.maker}}</b></h4>
+
+
+
+<br><hr><br>
+{% if user in t.voter.all %}
+    <h5> 투표 결과 </h5>
+        <div class="row">
+            {%for i in cset%}
+                <div class="col-sm-6">
+                    <img src="{{i.getpic}}" name="cho" width="50%"><br>
+                    {{i.name}} {{i.num|div:t.voter.count|mul:100|floatformat:2}} %<br><br>
+                </div>
+            {%endfor%}
+        </div>  
+
+{% else%}
+
+    <form method="post" action="{%url 'vote:vote' t.id %}">
+        {%csrf_token%}
+        <div class="row">
+        {%for i in cset%}
+            <div class="col-sm-6">
+                <img src="{{i.pic}}" name="cho" width="50%"><br>
+                <input type="radio" name="cho" value="{{i.id}}" {%if forloop.first %} checked{%endif%}> {{i.name}} 
+            </div>
+        {%endfor%}
+        </div>
+        <br>
+        <button class="btn btn-dark">투표하기</button>
+    </form>
+    {{c.pic}}
+{%endif%}
+
+{%endblock%}
+
+100*투표자/총원
+
+투표자/총원*100
+
+3*2

@@ -1,0 +1,99 @@
+{%extends 'base.html'%}
+{%load mathfilters%}
+{%block con%}
+<h1><b>게시판</b></h1>
+    
+<div class="text-end">
+    <a href="{%url 'board:create'%}" class="btn btn-dark">게시글생성</a>
+</div>
+
+<table class="table table-hover mt-4">
+    <thead>
+        <tr class="table-dark">
+            <th scope="col">NO</th>
+            <th scope="col">SUBJECT</th>
+            <th scope="col">SUMMARY</th>
+            <th scope="col">WRITER</th>
+            <th scope="col">LIKEY</th>
+        </tr>
+    </thead>
+    <tbody>
+       {%for i in bset%}
+        <tr>
+            <th scope="row">{{bset.start_index|add:forloop.counter0}}</th>
+            <td><a class="sub" href="{%url 'board:detail' i.id%}">{{i.subject}}</a></td>
+            <td>{{i.content|truncatewords:3}}</td>
+            <td>{{i.writer}}</td>
+            <td>0</td>
+        </tr>
+        {%empty%}
+        <tr>
+            <th colspan="5">                 
+                {%if kw%}
+                검색결과가 없음 
+            
+                {%else%}
+                게시물이 아예 없음
+            
+                {%endif%}
+            </th>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+<div class="text-center">
+    {% if bset.has_previous %}
+        <a href="{%url 'board:index'%}?page=1"> <button>1</button></a>
+        <a href="{%url 'board:index'%}?page={{bset.previous_page_number}}&cate={{cate}}&kw={{kw}}"><button><</button></a>
+    {%else%}
+        <button disabled>1</button>
+        <button disabled><</button>
+    {%endif%}
+    {% for i in bset.paginator.page_range%}
+        {% if i >= bset.number|sub:4 and bset.number|add:5 >= i %}
+            <a href="{% url 'board:index'%}?page={{i}}&cate={{cate}}&kw={{kw}}"> <button style="border: none; background-color: inherit;" {% if bset.number == i %} disabled {%endif%}>{{i}}</button></a>
+        {%endif%}
+    {%endfor%}
+
+
+    {%if bset.has_next%}
+        <a href="{%url 'board:index'%}?page={{bset.next_page_number}}&cate={{cate}}&kw={{kw}}"> <button>></button></a>
+        <a href="{%url 'board:index'%}?page={{bset.paginator.num_pages}}&cate={{cate}}&kw={{kw}}"><button>{{bset.paginator.num_pages}}</button></a>
+    {%else%}
+        <button disabled>></button>
+        <button disabled>{{bset.paginator.num_pages}}</button>
+    {%endif%}
+</div>
+
+<style>
+    .sub {
+        text-decoration: none;
+        color:black;
+        font-weight: bold;
+    }
+    .sub:hover{
+        color:red;
+    }
+</style>
+<form>
+    <div class="row">
+        <div class='col-sm-2 mt-3'>
+            <select name="cate" class="form-select" aria-label="Default select example">
+                <option value="sub" {%if cate == 'sub' %} selected {%endif%}>제목</option>
+                <option value="wri" {%if cate == 'wri' %} selected {%endif%}>작성자</option>
+                <option value="con" {%if cate == 'con' %} selected {%endif%}>내용</option>
+            </select>
+        </div>
+
+        <div class="col-sm-8 mb-3 mt-3">
+            <input size="50" value="{{kw}}" name="kw" type="text" class="form-control " placeholder="검색어를 입력하세요" aria-label="Recipient's username" aria-describedby="button-addon2">
+        </div>
+
+        <div class="col-sm-2 mt-3">
+            <button class="btn btn-outline-secondary" id="button-addon2">검색</button>
+        </div>
+    </div>
+</form>
+
+
+{%endblock%}
